@@ -1,7 +1,8 @@
 # encoding: utf-8
 
 class Zaru
-  CHARACTER_FILTER = /[\x00-\x1F\/\\:\*\?\"<>\|]/u
+  CHARACTER_FILTER = /[\x00-\x1F\/\\:\*\?\"<>\|~]/u
+  CHARACTER_REPLACEMENT = '_'
   UNICODE_WHITESPACE = /[[:space:]]+/u
   WINDOWS_RESERVED_NAMES =
     %w{CON PRN AUX NUL COM1 COM2 COM3 COM4 COM5
@@ -25,9 +26,10 @@ class Zaru
   # - don't allow certain special filenames (issue on Windows)
   # - don't allow filenames to start with a dot
   # - don't allow empty filenames
+
   def sanitize
     @sanitized ||=
-      filter(normalize.gsub(CHARACTER_FILTER,''))
+        filter(normalize.gsub(CHARACTER_FILTER, CHARACTER_REPLACEMENT))
   end
 
   # cut off at 255 characters
