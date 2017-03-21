@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class Zaru
-  CHARACTER_FILTER = /[\x00-\x1F\/\\:\*\?\"<>\|~]/u
+  CHARACTER_FILTER = /[\x00-\x1F\/\\:\*\?\"<>\|~%。]/u
   CHARACTER_REPLACEMENT = '_'
   UNICODE_WHITESPACE = /[[:space:]]+/u
   WINDOWS_RESERVED_NAMES =

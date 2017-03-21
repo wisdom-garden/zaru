@@ -29,7 +29,7 @@ class ZaruTest < Test::Unit::TestCase
   def test_sanitization
     assert_equal "abcdef", Zaru.sanitize!('abcdef')
 
-    %w(< > | / \\ * ? : ~).each do |char|
+    %w(< > | / \\ * ? :).each do |char|
       assert_equal '_', Zaru.sanitize!(char)
       assert_equal 'a_', Zaru.sanitize!("a#{char}")
       assert_equal '_a', Zaru.sanitize!("#{char}a")
@@ -71,4 +71,30 @@ class ZaruTest < Test::Unit::TestCase
     assert_equal "blub", Zaru.sanitize!('lpt1')
   end
 
+  def test_firefox_special_cases
+    %w(。).each do |char|
+      assert_equal '_', Zaru.sanitize!(char)
+      assert_equal 'a_', Zaru.sanitize!("a#{char}")
+      assert_equal '_a', Zaru.sanitize!("#{char}a")
+      assert_equal 'a_a', Zaru.sanitize!("a#{char}a")
+    end
+  end
+
+  def test_chrome_special_cases
+    %w(~).each do |char|
+      assert_equal '_', Zaru.sanitize!(char)
+      assert_equal 'a_', Zaru.sanitize!("a#{char}")
+      assert_equal '_a', Zaru.sanitize!("#{char}a")
+      assert_equal 'a_a', Zaru.sanitize!("a#{char}a")
+    end
+  end
+
+  def test_ie_special_cases
+    %w(%).each do |char|
+      assert_equal '_', Zaru.sanitize!(char)
+      assert_equal 'a_', Zaru.sanitize!("a#{char}")
+      assert_equal '_a', Zaru.sanitize!("#{char}a")
+      assert_equal 'a_a', Zaru.sanitize!("a#{char}a")
+    end
+  end
 end
